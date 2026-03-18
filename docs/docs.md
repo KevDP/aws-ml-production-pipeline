@@ -1,0 +1,1 @@
+In this folder it will be all the documentation about the setup, data description and the deployment process.

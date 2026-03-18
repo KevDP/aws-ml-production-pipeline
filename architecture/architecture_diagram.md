@@ -1,0 +1,1 @@
+In this folder, it will be a diagram of the architecture presented in this project, to support the designed structure.

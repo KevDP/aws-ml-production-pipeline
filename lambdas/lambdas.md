@@ -1,0 +1,1 @@
+In this folder will be presented the lambda function used apply the sagemaker endpoint runtime and then integrate it to API gateway.

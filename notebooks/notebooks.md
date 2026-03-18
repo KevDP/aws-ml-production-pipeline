@@ -1,0 +1,1 @@
+In this folder it will be presented the training pipeline used for the choosed data ingestion.
