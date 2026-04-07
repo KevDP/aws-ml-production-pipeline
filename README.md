@@ -14,9 +14,11 @@ The system follows a production-style cloud ML architecture where inference is s
 
 **Flow:**
 
+```json
 Client → API Gateway → Lambda → SageMaker Endpoint → ML Model
                     ↘
               S3 (data & artifacts)
+```
 
 
 - Client applications send HTTP requests to the API  
@@ -25,7 +27,7 @@ Client → API Gateway → Lambda → SageMaker Endpoint → ML Model
 - The model generates predictions in real time  
 - S3 stores datasets and model artifacts  
 
-![Architecture](images/architecture_diagram.png)
+![Architecture](docs/imgs/architecture_diagram.png)
 
 ---
 
@@ -53,48 +55,47 @@ Client → API Gateway → Lambda → SageMaker Endpoint → ML Model
 ## Project Structure
 
 aws-ml-production-pipeline/
-│
-├── architecture/
-│   └── ml_architecture.png
-│
-├── docs/
-│   └── s3_setup.md
-│
-├── images/
-│   ├── architecture_diagram.png
-│   ├── s3_data_structure.png
-│   ├── model_training_metrics.png
-│   ├── sagemaker_endpoint.png
-│   ├── lambda_inference_function.png
-│   └── api_prediction_example.png
-│
-├── notebooks/
-│   └── demand_forecasting_training.ipynb
-│
-├── src/
-│   └── inference.py
-│
-├── lambda/
-│   └── predict_handler.py
-│
-└── README.md
 
-S3 Data Layout
+  - architecture/
+      - ml_architecture.png
 
+  - docs/
+    - s3_setup.md
+    - images/
+      - Architecture-diagram.png
+      - S3-view.png
+      - Model-results.png
+      - Notebook-endpoint.png
+      - Notebooks-overview.png
+      - Lambda-overview.png
+      - Function-code.png
+      - Testing-shell.png
+  - notebooks/
+    - demand_forecasting_training.ipynb
+
+  - src/
+    - inference.py
+
+  - lambda/
+    - predict_handler.py
+
+  - README.md
+
+## S3 Data Layout
+
+```json
 s3://ml-demand-forecasting-kevin/
-│
-├── raw/
-│   └── demand_data.csv
-│
-├── processed/
-│
-└── models/
-    └── demand_forecasting_model.joblib
+```
+
+  - raw/
+    - demand_data.csv
+  - processed/
+
+  - models/
+    - demand_forecasting_model.joblib
 
 
 This structure enables scalable and decoupled data access across training and inference workflows.
-
----
 
 ## Machine Learning Pipeline
 
@@ -104,11 +105,11 @@ This structure enables scalable and decoupled data access across training and in
 - Acts as the central data source for training and deployment  
 - Enables reproducibility and scalability  
 
+![S3 view](docs/imgs/S3-view.png)
+
 ---
 
 ### 2. Model Training
-
-Training is performed using a SageMaker notebook.
 
 **Key steps:**
 - Data ingestion from S3  
@@ -116,6 +117,8 @@ Training is performed using a SageMaker notebook.
 - Train/test split  
 - Model training using XGBoost  
 - Model serialization and export  
+
+![Notebook overview](docs/imgs/Notebook-overview.png)
 
 ---
 
@@ -138,7 +141,7 @@ MAPE: 9.1%
 R² Score: 0.84
 
 
-![Training Metrics](images/model_training_metrics.png)
+![Training Metrics](docs/imgs/Model-results.png)
 
 ---
 
@@ -151,7 +154,7 @@ Deployment includes:
 - Custom inference logic  
 - Fully managed, auto-scalable infrastructure  
 
-![SageMaker Endpoint](images/sagemaker_endpoint.png)
+![SageMaker Endpoint](docs/imgs/Notebook-endpoint.png)
 
 ---
 
@@ -165,7 +168,8 @@ A serverless API layer enables real-time predictions.
 
 Lambda acts as a lightweight orchestrator that forwards requests to the SageMaker endpoint.
 
-![Lambda Function](images/lambda_inference_function.png)
+![Lambda Function](docs/imgs/Lambda-overview.png)
+![Lambda Function 2](docs/imgs/Function-code.png)
 
 ---
 
@@ -175,12 +179,15 @@ The system exposes a `/predict` endpoint.
 
 ### Example Request
 
+```json
 POST /predict
+```
 
 ### Payload
 
+```json
 [[1, 101, 12.5, 0, 0, 22.3, 6, 2]]
-
+```
 
 ### Response
 
@@ -190,17 +197,23 @@ POST /predict
 }
 ```
 
+![Test results](docs/imgs/Testing-shell.png)
+
 ## Setup Instructions
 
 1. Upload Dataset to S3
 
-- s3://bucket/raw/demand_data.csv
+```json
+s3://bucket/raw/demand_data.csv
+```
 
 2. Train the Model
 
 ### Run:
 
+```json
 notebooks/demand_forecasting_training.ipynb
+```
 
 *This step:*
 
@@ -212,7 +225,9 @@ notebooks/demand_forecasting_training.ipynb
 
 ### From the notebook:
 
+```json
 model.deploy()
+```
 
 4. Deploy Serverless API
 
@@ -236,7 +251,8 @@ The API will route inference requests to the SageMaker endpoint.
 
 #### Kevin Joan Delgado Pérez
 
-B.S. Robotics and Digital Systems Engineering — Tecnológico de Monterrey
-Minor in AI & Data Science
+*B.S. Robotics and Digital Systems Engineering — Tecnológico de Monterrey*
 
-Former AI/Data roles at AWS and Deloitte
+*Minor in AI & Data Science*
+
+*Former AI/Data roles at AWS and Deloitte*
